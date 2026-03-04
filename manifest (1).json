@@ -1,0 +1,75 @@
+{
+  "name": "ClinicHub Pro - Professional Healthcare Management",
+  "short_name": "ClinicHub",
+  "description": "Enterprise-grade clinic management system with patient records, appointments, and monthly activation",
+  "start_url": "./",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#1e3a8a",
+  "background_color": "#ffffff",
+  "prefer_related_applications": false,
+  "categories": ["healthcare", "productivity"],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%231e3a8a' width='540' height='60'/><text x='20' y='40' font-size='20' font-weight='bold' fill='white'>ClinicHub Pro</text><rect fill='white' y='60' width='540' height='660'/></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 800'><rect fill='%231e3a8a' width='260' height='800'/><rect fill='%231e3a8a' width='1280' height='60'/><text x='20' y='40' font-size='24' font-weight='bold' fill='white'>ClinicHub Pro</text><rect fill='white' y='60' width='1280' height='740'/></svg>",
+      "sizes": "1280x800",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231e3a8a' width='192' height='192' rx='45'/><path d='M96 60v72M60 96h72' stroke='white' stroke-width='8' stroke-linecap='round'/><circle cx='96' cy='96' r='35' fill='none' stroke='white' stroke-width='6'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%231e3a8a' width='512' height='512' rx='120'/><path d='M256 150v212M150 256h212' stroke='white' stroke-width='24' stroke-linecap='round'/><circle cx='256' cy='256' r='100' fill='none' stroke='white' stroke-width='18'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231e3a8a' width='180' height='180' rx='40'/><path d='M90 55v70M55 90h70' stroke='white' stroke-width='7' stroke-linecap='round'/><circle cx='90' cy='90' r='33' fill='none' stroke='white' stroke-width='5'/></svg>",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Appointment",
+      "short_name": "Schedule",
+      "description": "Schedule a new appointment",
+      "url": "./clinichub-pro.html?screen=schedule",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%231e3a8a' width='96' height='96' rx='20'/><text x='50%' y='50%' font-size='50' text-anchor='middle' dy='.35em'>📅</text></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Patient Records",
+      "short_name": "Patients",
+      "description": "View patient records",
+      "url": "./clinichub-pro.html?screen=patients",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%23059669' width='96' height='96' rx='20'/><text x='50%' y='50%' font-size='50' text-anchor='middle' dy='.35em'>👥</text></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}

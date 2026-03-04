@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="ClinicHub Pro - Professional Healthcare Management System">
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>ClinicHub Pro - Healthcare Management</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231e3a8a' width='192' height='192' rx='45'/><path d='M96 60v72M60 96h72' stroke='white' stroke-width='8' stroke-linecap='round'/><circle cx='96' cy='96' r='35' fill='none' stroke='white' stroke-width='6'/></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231e3a8a' width='180' height='180' rx='40'/><path d='M90 55v70M55 90h70' stroke='white' stroke-width='7' stroke-linecap='round'/><circle cx='90' cy='90' r='33' fill='none' stroke='white' stroke-width='5'/></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #0891b2;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #f8fafc;
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+
+        /* ===== LOGIN SCREEN ===== */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: clamp(24px, 5vw, 48px);
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-icon {
+            font-size: clamp(40px, 10vw, 60px);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .login-title {
+            font-size: clamp(24px, 6vw, 32px);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="date"],
+        input[type="time"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background: white;
+            color: var(--gray-900);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .btn {
+            width: 100%;
+            padding: clamp(10px, 2vw, 14px);
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-msg {
+            background: #fecaca;
+            color: #7f1d1d;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            border-left: 4px solid #dc2626;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        /* ===== MAIN APP ===== */
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        /* RESPONSIVE LAYOUT */
+        @media (min-width: 768px) {
+            .app-wrapper {
+                flex-direction: row;
+            }
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            width: 100%;
+            max-height: 80px;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 100;
+        }
+
+        @media (min-width: 768px) {
+            .sidebar {
+                width: 260px;
+                max-height: 100vh;
+                padding: 24px 16px;
+                position: sticky;
+                top: 0;
+            }
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 0;
+        }
+
+        @media (min-width: 768px) {
+            .sidebar-header {
+                margin-bottom: 32px;
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .sidebar-icon {
+            font-size: 32px;
+            display: block;
+        }
+
+        .sidebar-text h1 {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .sidebar-text p {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .sidebar-text h1 {
+                font-size: 20px;
+            }
+            .sidebar-text p {
+                font-size: 12px;
+            }
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        @media (min-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:active {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+        }
+
+        @media (min-width: 768px) {
+            .nav-link {
+                font-size: 13px;
+                padding: 12px 14px;
+                width: 100%;
+            }
+        }
+
+        .nav-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                padding: 24px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .main-content {
+                padding: 32px;
+            }
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-title {
+            font-size: clamp(20px, 5vw, 28px);
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--success);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-badge.expired {
+            background: var(--danger);
+        }
+
+        /* ===== DASHBOARD ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px 16px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:active {
+            transform: scale(0.98);
+        }
+
+        @media (min-width: 768px) {
+            .stat-card {
+                padding: 24px;
+            }
+        }
+
+        .stat-value {
+            font-size: clamp(24px, 6vw, 36px);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (min-width: 768px) {
+            .section {
+                padding: 24px;
+                margin-bottom: 24px;
+            }
+        }
+
+        .section-title {
+            font-size: clamp(16px, 4vw, 20px);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ===== FORMS ===== */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .form-grid.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* ===== LISTS ===== */
+        .items-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        @media (min-width: 768px) {
+            .items-list {
+                gap: 16px;
+            }
+        }
+
+        .item-card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .item-card:active {
+            background: var(--gray-100);
+        }
+
+        @media (min-width: 768px) {
+            .item-card {
+                padding: 20px;
+            }
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .item-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .item-meta {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+
+        .item-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .item-status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .item-status.completed {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        /* ===== TABLE ===== */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: -20px -20px 0;
+            padding: 0 20px 20px;
+        }
+
+        @media (min-width: 768px) {
+            .table-wrapper {
+                margin: -24px -24px 0;
+                padding: 0 24px 24px;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        @media (min-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+        }
+
+        th {
+            background: var(--gray-100);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gray-700);
+            border-bottom: 2px solid var(--gray-200);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        /* ===== BUTTONS ===== */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .btn-small-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-small-primary:active {
+            opacity: 0.8;
+        }
+
+        .btn-small-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-small-danger:active {
+            background: #fecaca;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-600);
+        }
+
+        @media (min-width: 768px) {
+            .empty-state {
+                padding: 60px 20px;
+            }
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--gray-700);
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @media (min-width: 768px) {
+            .modal {
+                align-items: center;
+                padding: 0;
+            }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            max-width: 500px;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray-600);
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== UTILITIES ===== */
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--gray-900);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease-out;
+            z-index: 2000;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--primary);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== RESPONSIVE ADJUSTMENTS ===== */
+        @media (max-width: 480px) {
+            .btn {
+                padding: 12px 14px;
+                font-size: 13px;
+            }
+
+            .section {
+                padding: 16px;
+            }
+
+            .modal-content {
+                border-radius: 12px 12px 0 0;
+            }
+
+            .stats-grid {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <span class="login-icon">⚕️</span>
+                <h1 class="login-title">ClinicHub Pro</h1>
+                <p class="login-subtitle">Healthcare Management System</p>
+            </div>
+            <div class="error-msg" id="errorMsg"></div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Clinic Name</label>
+                    <input type="text" id="clinicNameInput" placeholder="Enter clinic name" required>
+                </div>
+                <div class="form-group">
+                    <label>Doctor Name</label>
+                    <input type="text" id="doctorNameInput" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Activation Key</label>
+                    <input type="text" id="activationKeyInput" placeholder="Enter monthly key" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span>🔓</span> Unlock Access
+                </button>
+            </form>
+            <div style="margin-top: 20px; padding: 12px; background: #f0f9ff; border-radius: 8px; font-size: 12px; color: var(--gray-700);">
+                <strong>Demo Key:</strong> <code style="background: white; padding: 2px 6px; border-radius: 3px; font-weight: 600;">DEMO2025</code>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="appScreen" class="app-wrapper" style="display: none;">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-icon">⚕️</span>
+                <div class="sidebar-text">
+                    <h1 id="clinicNameDisplay">ClinicHub</h1>
+                    <p>Pro System</p>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><button class="nav-link active" onclick="switchScreen('dashboard')" data-screen="dashboard"><span class="nav-icon">📊</span> <span>Dashboard</span></button></li>
+                <li><button class="nav-link" onclick="switchScreen('appointments')" data-screen="appointments"><span class="nav-icon">📅</span> <span>Appointments</span></button></li>
+                <li><button class="nav-link" onclick="switchScreen('patients')" data-screen="patients"><span class="nav-icon">👥</span> <span>Patients</span></button></li>
+                <li><button class="nav-link" onclick="switchScreen('schedule')" data-screen="schedule"><span class="nav-icon">➕</span> <span>Schedule</span></button></li>
+                <li><button class="nav-link" onclick="switchScreen('register')" data-screen="register"><span class="nav-icon">➕</span> <span>Register</span></button></li>
+                <li><button class="nav-link" onclick="switchScreen('license')" data-screen="license"><span class="nav-icon">🔐</span> <span>License</span></button></li>
+                <li><button class="nav-link" onclick="logout()" style="background: rgba(255,255,255,0.2); margin-top: 8px;"><span class="nav-icon">🚪</span> <span>Logout</span></button></li>
+            </ul>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- DASHBOARD SCREEN -->
+            <div id="dashboardScreen" class="screen active">
+                <div class="header-bar">
+                    <h2 class="header-title">📊 Dashboard</h2>
+                    <div class="status-badge" id="licenseStatus">✓ Active</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="todayCount">0</div>
+                        <div class="stat-label">Today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalPatientsCount">0</div>
+                        <div class="stat-label">Patients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="upcomingCount">0</div>
+                        <div class="stat-label">Upcoming</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">📅 Today's Appointments</h3>
+                    <div id="todayList" class="items-list"></div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">📆 Upcoming Appointments</h3>
+                    <div id="upcomingList" class="items-list"></div>
+                </div>
+            </div>
+
+            <!-- APPOINTMENTS SCREEN -->
+            <div id="appointmentsScreen" class="screen">
+                <div class="header-bar">
+                    <h2 class="header-title">📅 All Appointments</h2>
+                </div>
+                <div class="section">
+                    <div id="appointmentsList" class="items-list"></div>
+                </div>
+            </div>
+
+            <!-- PATIENTS SCREEN -->
+            <div id="patientsScreen" class="screen">
+                <div class="header-bar">
+                    <h2 class="header-title">👥 Patient Records</h2>
+                </div>
+                <div class="section">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Age</th>
+                                    <th>Visits</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patientsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCHEDULE SCREEN -->
+            <div id="scheduleScreen" class="screen">
+                <div class="header-bar">
+                    <h2 class="header-title">➕ Schedule Appointment</h2>
+                </div>
+                <div class="section">
+                    <form id="scheduleForm" onsubmit="addAppointment(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Patient Name *</label>
+                                <input type="text" id="schedulePatient" list="patientsList" required>
+                                <datalist id="patientsList"></datalist>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone *</label>
+                                <input type="tel" id="schedulePhone" required>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Date *</label>
+                                <input type="date" id="scheduleDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Time *</label>
+                                <input type="time" id="scheduleTime" required>
+                            </div>
+                        </div>
+                        <div class="form-grid full">
+                            <div class="form-group">
+                                <label>Symptoms/Reason</label>
+                                <textarea id="scheduleSymptoms" placeholder="Enter symptoms or reason for visit"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">✓ Schedule</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- REGISTER SCREEN -->
+            <div id="registerScreen" class="screen">
+                <div class="header-bar">
+                    <h2 class="header-title">➕ Register Patient</h2>
+                </div>
+                <div class="section">
+                    <form id="registerForm" onsubmit="addPatient(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Full Name *</label>
+                                <input type="text" id="registerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Age *</label>
+                                <input type="number" id="registerAge" min="1" required>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Phone *</label>
+                                <input type="tel" id="registerPhone" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="registerEmail">
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select id="registerGender">
+                                    <option value="">Select</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Allergies/History</label>
+                                <input type="text" id="registerHistory" placeholder="Medical history">
+                            </div>
+                        </div>
+                        <div class="form-grid full">
+                            <div class="form-group">
+                                <label>Notes</label>
+                                <textarea id="registerNotes" placeholder="Additional notes"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">✓ Register</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- LICENSE SCREEN -->
+            <div id="licenseScreen" class="screen">
+                <div class="header-bar">
+                    <h2 class="header-title">🔐 License Information</h2>
+                </div>
+                <div class="section">
+                    <div class="form-grid full" style="gap: 12px;">
+                        <div style="background: var(--gray-50); padding: 16px; border-radius: 8px;">
+                            <p style="font-size: 12px; color: var(--gray-600); margin-bottom: 8px; text-transform: uppercase; font-weight: 600;">Clinic Name</p>
+                            <p style="font-size: 16px; font-weight: 700;" id="licenseClinic">-</p>
+                        </div>
+                        <div style="background: var(--gray-50); padding: 16px; border-radius: 8px;">
+                            <p style="font-size: 12px; color: var(--gray-600); margin-bottom: 8px; text-transform: uppercase; font-weight: 600;">Doctor Name</p>
+                            <p style="font-size: 16px; font-weight: 700;" id="licenseDoctor">-</p>
+                        </div>
+                        <div style="background: var(--gray-50); padding: 16px; border-radius: 8px;">
+                            <p style="font-size: 12px; color: var(--gray-600); margin-bottom: 8px; text-transform: uppercase; font-weight: 600;">Active Key</p>
+                            <p style="font-size: 16px; font-weight: 700; font-family: monospace;" id="licenseKey">-</p>
+                        </div>
+                        <div style="background: var(--gray-50); padding: 16px; border-radius: 8px;">
+                            <p style="font-size: 12px; color: var(--gray-600); margin-bottom: 8px; text-transform: uppercase; font-weight: 600;">Status</p>
+                            <p style="font-size: 14px; font-weight: 700;" id="licenseStatusText">✓ Active</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let appState = {
+            clinic: '', doctor: '', key: '', patients: [], appointments: []
+        };
+
+        window.addEventListener('load', () => {
+            checkAuth();
+            setMinDate();
+        });
+
+        function setMinDate() {
+            document.getElementById('scheduleDate').min = new Date().toISOString().split('T')[0];
+        }
+
+        function checkAuth() {
+            const stored = localStorage.getItem('clinicHub');
+            if (stored && isKeyValid(JSON.parse(stored).key)) {
+                appState = JSON.parse(stored);
+                showApp();
+                updateDashboard();
+            } else {
+                showLogin();
+            }
+        }
+
+        function isKeyValid(key) {
+            if (key === 'DEMO2025') return true;
+            const regex = /^[A-Z0-9]+-\d{4}$/;
+            if (!regex.test(key)) return false;
+            const [m, y] = key.split('-')[1].match(/\d{2}/g);
+            const now = new Date();
+            return parseInt(y) === now.getFullYear() % 100 && parseInt(m) === now.getMonth() + 1;
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const clinic = document.getElementById('clinicNameInput').value.trim();
+            const doctor = document.getElementById('doctorNameInput').value.trim();
+            const key = document.getElementById('activationKeyInput').value.trim().toUpperCase();
+
+            if (!clinic || !doctor || !key) {
+                showError('Please fill all fields');
+                return;
+            }
+
+            if (!isKeyValid(key)) {
+                showError('Invalid key. Use: DEMO2025');
+                return;
+            }
+
+            appState = { clinic, doctor, key, patients: appState.patients, appointments: appState.appointments };
+            localStorage.setItem('clinicHub', JSON.stringify(appState));
+            showApp();
+            updateDashboard();
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('errorMsg');
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 4000);
+        }
+
+        function showLogin() {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('appScreen').style.display = 'none';
+        }
+
+        function showApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appScreen').style.display = 'flex';
+            document.getElementById('clinicNameDisplay').textContent = appState.clinic;
+            updateLicense();
+        }
+
+        function switchScreen(name) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(name + 'Screen').classList.add('active');
+            document.querySelectorAll('[data-screen]').forEach(b => b.classList.remove('active'));
+            document.querySelector(`[data-screen="${name}"]`).classList.add('active');
+        }
+
+        function updateDashboard() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppts = appState.appointments.filter(a => a.date === today);
+            const futureAppts = appState.appointments.filter(a => new Date(a.date) > new Date()).slice(0, 5);
+
+            document.getElementById('todayCount').textContent = todayAppts.length;
+            document.getElementById('totalPatientsCount').textContent = appState.patients.length;
+            document.getElementById('upcomingCount').textContent = appState.appointments.filter(a => new Date(a.date) > new Date()).length;
+
+            renderAppts('todayList', todayAppts);
+            renderAppts('upcomingList', futureAppts);
+        }
+
+        function renderAppts(id, appts) {
+            const el = document.getElementById(id);
+            if (!appts.length) {
+                el.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">No appointments</div></div>';
+                return;
+            }
+            el.innerHTML = appts.map(a => `
+                <div class="item-card">
+                    <div class="item-header">
+                        <div>
+                            <div class="item-title">${a.time} • ${a.patient}</div>
+                            <div class="item-meta">📞 ${a.phone}</div>
+                        </div>
+                        <span class="item-status ${a.status || 'pending'}">${(a.status || 'pending').toUpperCase()}</span>
+                    </div>
+                    ${a.symptoms ? `<div class="item-meta">📋 ${a.symptoms}</div>` : ''}
+                    <div class="action-buttons">
+                        <button class="btn-small btn-small-primary" onclick="completeAppt('${a.id}')">✓ Done</button>
+                        <button class="btn-small btn-small-danger" onclick="deleteAppt('${a.id}')">🗑 Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addAppointment(e) {
+            e.preventDefault();
+            const apt = {
+                id: Date.now().toString(),
+                patient: document.getElementById('schedulePatient').value.trim(),
+                phone: document.getElementById('schedulePhone').value.trim(),
+                date: document.getElementById('scheduleDate').value,
+                time: document.getElementById('scheduleTime').value,
+                symptoms: document.getElementById('scheduleSymptoms').value.trim(),
+                status: 'pending'
+            };
+            appState.appointments.push(apt);
+            saveData();
+            document.getElementById('scheduleForm').reset();
+            showToast('✓ Appointment scheduled');
+            switchScreen('dashboard');
+            updateDashboard();
+        }
+
+        function completeAppt(id) {
+            const apt = appState.appointments.find(a => a.id === id);
+            if (apt) { apt.status = 'completed'; saveData(); updateDashboard(); showToast('✓ Marked complete'); }
+        }
+
+        function deleteAppt(id) {
+            if (confirm('Delete?')) {
+                appState.appointments = appState.appointments.filter(a => a.id !== id);
+                saveData();
+                updateDashboard();
+                showToast('✓ Deleted');
+            }
+        }
+
+        function addPatient(e) {
+            e.preventDefault();
+            const p = {
+                id: Date.now().toString(),
+                name: document.getElementById('registerName').value.trim(),
+                age: document.getElementById('registerAge').value,
+                phone: document.getElementById('registerPhone').value.trim(),
+                email: document.getElementById('registerEmail').value.trim(),
+                gender: document.getElementById('registerGender').value,
+                history: document.getElementById('registerHistory').value.trim()
+            };
+            appState.patients.push(p);
+            saveData();
+            document.getElementById('registerForm').reset();
+            updatePatientsList();
+            updatePatientDatalist();
+            showToast('✓ Patient registered');
+            switchScreen('patients');
+        }
+
+        function updatePatientsList() {
+            const tbody = document.getElementById('patientsTable');
+            tbody.innerHTML = appState.patients.map(p => {
+                const visits = appState.appointments.filter(a => a.patient === p.name).length;
+                return `
+                    <tr>
+                        <td>${p.name}</td>
+                        <td>${p.phone}</td>
+                        <td>${p.age}</td>
+                        <td>${visits}</td>
+                        <td><button class="btn-small btn-small-danger" onclick="deletePatient('${p.id}')">🗑</button></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updatePatientDatalist() {
+            document.getElementById('patientsList').innerHTML = appState.patients.map(p => `<option value="${p.name}">`).join('');
+        }
+
+        function deletePatient(id) {
+            if (confirm('Delete patient?')) {
+                appState.patients = appState.patients.filter(p => p.id !== id);
+                saveData();
+                updatePatientsList();
+                updatePatientDatalist();
+                showToast('✓ Deleted');
+            }
+        }
+
+        function updateLicense() {
+            document.getElementById('licenseClinic').textContent = appState.clinic;
+            document.getElementById('licenseDoctor').textContent = appState.doctor;
+            document.getElementById('licenseKey').textContent = appState.key;
+            const valid = isKeyValid(appState.key);
+            document.getElementById('licenseStatus').textContent = valid ? '✓ Active' : '✗ Expired';
+            document.getElementById('licenseStatus').classList.toggle('expired', !valid);
+        }
+
+        function logout() {
+            if (confirm('Logout?')) {
+                localStorage.removeItem('clinicHub');
+                location.reload();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('clinicHub', JSON.stringify(appState));
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
