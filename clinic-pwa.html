@@ -760,4 +760,649 @@
 
     <!-- MAIN APP -->
     <div id="appScreen" class="app-layout" style="display: none;">
-        <!-- SIDEBAR --
+         <!-- SIDEBAR -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">⚕️</div>
+                <div class="sidebar-title" id="sidebarClinicName">ClinicPro</div>
+                <div class="sidebar-subtitle">Management System</div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <div class="nav-link active" onclick="switchScreen('dashboard')" data-screen="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span>Dashboard</span>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="switchScreen('appointments')" data-screen="appointments">
+                        <span class="nav-icon">📅</span>
+                        <span>Appointments</span>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="switchScreen('patients')" data-screen="patients">
+                        <span class="nav-icon">👥</span>
+                        <span>Patients</span>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="switchScreen('newAppointment')" data-screen="newAppointment">
+                        <span class="nav-icon">➕</span>
+                        <span>New Appointment</span>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="switchScreen('newPatient')" data-screen="newPatient">
+                        <span class="nav-icon">➕</span>
+                        <span>New Patient</span>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="switchScreen('license')" data-screen="license">
+                        <span class="nav-icon">🔐</span>
+                        <span>License</span>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div id="sidebarDoctorName">Dr. Name</div>
+                    <div class="user-role">👨‍⚕️ Doctor</div>
+                </div>
+                <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- HEADER -->
+            <div class="header">
+                <h2 id="screenTitle">Dashboard</h2>
+                <div class="header-right">
+                    <div class="license-status" id="licenseStatus">✓ License Active</div>
+                </div>
+            </div>
+
+            <!-- DASHBOARD SCREEN -->
+            <div id="dashboardScreen" class="screen active">
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-value" id="todayAppointments">0</div>
+                        <div class="card-label">Today's Appointments</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-value" id="totalPatients">0</div>
+                        <div class="card-label">Total Patients</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-value" id="upcomingCount">0</div>
+                        <div class="card-label">Upcoming Appointments</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>📅 Today's Appointments</h3>
+                    <div id="todayAppointmentsList" class="appointments-list"></div>
+                </div>
+
+                <div class="form-section">
+                    <h3>📆 Upcoming Appointments</h3>
+                    <div id="upcomingAppointmentsList" class="appointments-list"></div>
+                </div>
+            </div>
+
+            <!-- APPOINTMENTS SCREEN -->
+            <div id="appointmentsScreen" class="screen">
+                <div class="form-section">
+                    <h3>📅 All Appointments</h3>
+                    <div id="appointmentsList" class="appointments-list"></div>
+                </div>
+            </div>
+
+            <!-- PATIENTS SCREEN -->
+            <div id="patientsScreen" class="screen">
+                <div class="form-section">
+                    <h3>👥 Patient Records</h3>
+                    <table class="patients-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Age</th>
+                                <th>Appointments</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- NEW APPOINTMENT SCREEN -->
+            <div id="newAppointmentScreen" class="screen">
+                <div class="form-section">
+                    <h3>➕ Schedule New Appointment</h3>
+                    <form id="appointmentForm" onsubmit="addAppointment(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Patient Name *</label>
+                                <input type="text" id="appointmentPatient" list="patientsList" required>
+                                <datalist id="patientsList"></datalist>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number *</label>
+                                <input type="tel" id="appointmentPhone" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date *</label>
+                                <input type="date" id="appointmentDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Time *</label>
+                                <input type="time" id="appointmentTime" required>
+                            </div>
+                        </div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label>Problem/Symptoms</label>
+                                <textarea id="appointmentSymptoms" rows="4" placeholder="Describe patient's symptoms or reason for visit"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">✓ Schedule Appointment</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- NEW PATIENT SCREEN -->
+            <div id="newPatientScreen" class="screen">
+                <div class="form-section">
+                    <h3>➕ Register New Patient</h3>
+                    <form id="patientForm" onsubmit="addPatient(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name *</label>
+                                <input type="text" id="patientName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Age *</label>
+                                <input type="number" id="patientAge" min="1" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone Number *</label>
+                                <input type="tel" id="patientPhone" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="patientEmail">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select id="patientGender">
+                                    <option value="">Select...</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Medical History</label>
+                                <input type="text" id="patientHistory" placeholder="Any allergies or conditions">
+                            </div>
+                        </div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label>Notes</label>
+                                <textarea id="patientNotes" rows="4" placeholder="Additional notes..."></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">✓ Register Patient</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- LICENSE SCREEN -->
+            <div id="licenseScreen" class="screen">
+                <div class="form-section">
+                    <h3>🔐 License Information</h3>
+                    <div style="display: grid; gap: 20px;">
+                        <div style="background: var(--gray-50); padding: 20px; border-radius: 10px;">
+                            <p style="margin-bottom: 10px; color: var(--text-secondary); font-size: 14px;">Clinic Name</p>
+                            <p style="font-size: 18px; font-weight: 600; color: var(--text-primary);" id="licenseClinicName">-</p>
+                        </div>
+                        <div style="background: var(--gray-50); padding: 20px; border-radius: 10px;">
+                            <p style="margin-bottom: 10px; color: var(--text-secondary); font-size: 14px;">Doctor Name</p>
+                            <p style="font-size: 18px; font-weight: 600; color: var(--text-primary);" id="licenseDoctorName">-</p>
+                        </div>
+                        <div style="background: var(--gray-50); padding: 20px; border-radius: 10px;">
+                            <p style="margin-bottom: 10px; color: var(--text-secondary); font-size: 14px;">Active Key</p>
+                            <p style="font-size: 18px; font-weight: 600; color: var(--text-primary); font-family: monospace;" id="licenseKey">-</p>
+                        </div>
+                        <div style="background: var(--gray-50); padding: 20px; border-radius: 10px;">
+                            <p style="margin-bottom: 10px; color: var(--text-secondary); font-size: 14px;">License Status</p>
+                            <p id="licenseStatusText" style="font-size: 16px; font-weight: 600;">
+                                <span class="badge badge-success">✓ Active</span>
+                            </p>
+                        </div>
+                        <div style="background: var(--gray-50); padding: 20px; border-radius: 10px;">
+                            <p style="margin-bottom: 10px; color: var(--text-secondary); font-size: 14px;">Last Verified</p>
+                            <p style="font-size: 16px; color: var(--text-primary);" id="licenseVerified">Today</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== APP STATE =====
+        let appState = {
+            clinicName: '',
+            doctorName: '',
+            activationKey: '',
+            patients: [],
+            appointments: [],
+            currentScreen: 'dashboard'
+        };
+
+        // ===== INITIALIZATION =====
+        window.addEventListener('load', () => {
+            registerServiceWorker();
+            checkAuthStatus();
+            setMinDate();
+        });
+
+        function setMinDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointmentDate').min = today;
+        }
+
+        // ===== SERVICE WORKER REGISTRATION =====
+        async function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const sw = await navigator.serviceWorker.register('data:text/javascript,const CACHE_NAME="clinic-v1";self.addEventListener("install",(e)=>{e.waitUntil(caches.open(CACHE_NAME).then((c)=>c.addAll(["/"])))});self.addEventListener("fetch",(e)=>{e.respondWith(caches.match(e.request).then((r)=>r||fetch(e.request)))});');
+                } catch (err) {
+                    console.log('SW registration skipped');
+                }
+            }
+        }
+
+        // ===== AUTHENTICATION =====
+        function checkAuthStatus() {
+            const stored = localStorage.getItem('clinicAuth');
+            if (stored) {
+                try {
+                    appState = JSON.parse(stored);
+                    if (isLicenseValid()) {
+                        showApp();
+                        loadData();
+                    } else {
+                        showAuth('License expired. Please enter a new activation key.');
+                    }
+                } catch (e) {
+                    showAuth();
+                }
+            } else {
+                showAuth();
+            }
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const clinicName = document.getElementById('clinicName').value.trim();
+            const doctorName = document.getElementById('doctorName').value.trim();
+            const activationKey = document.getElementById('activationKey').value.trim();
+
+            if (!clinicName || !doctorName || !activationKey) {
+                showAuthMessage('Please fill all fields', 'error');
+                return;
+            }
+
+            if (validateActivationKey(activationKey)) {
+                appState = {
+                    clinicName,
+                    doctorName,
+                    activationKey,
+                    patients: appState.patients,
+                    appointments: appState.appointments,
+                    licenseDate: new Date().toISOString()
+                };
+
+                localStorage.setItem('clinicAuth', JSON.stringify(appState));
+                showApp();
+                loadData();
+            } else {
+                showAuthMessage('❌ Invalid activation key. Please try again. (Demo: DEMO2025)', 'error');
+            }
+        }
+
+        function validateActivationKey(key) {
+            // Demo key valid for any month
+            if (key === 'DEMO2025') return true;
+
+            // Format: CLINIC-MMYY (e.g., CLINIC-0326 for March 2026)
+            const regex = /^[A-Z0-9]+-\d{4}$/;
+            if (!regex.test(key)) return false;
+
+            const monthYear = key.split('-')[1];
+            const month = parseInt(monthYear.substring(0, 2));
+            const year = parseInt('20' + monthYear.substring(2, 4));
+
+            const now = new Date();
+            const currentMonth = now.getMonth() + 1;
+            const currentYear = now.getFullYear();
+
+            return (year === currentYear && month === currentMonth);
+        }
+
+        function isLicenseValid() {
+            if (appState.activationKey === 'DEMO2025') return true;
+
+            if (!appState.licenseDate) return false;
+
+            const regex = /^[A-Z0-9]+-\d{4}$/;
+            if (!regex.test(appState.activationKey)) return false;
+
+            const monthYear = appState.activationKey.split('-')[1];
+            const month = parseInt(monthYear.substring(0, 2));
+            const year = parseInt('20' + monthYear.substring(2, 4));
+
+            const now = new Date();
+            const currentMonth = now.getMonth() + 1;
+            const currentYear = now.getFullYear();
+
+            return (year === currentYear && month === currentMonth);
+        }
+
+        function showAuthMessage(msg, type) {
+            const msgEl = document.getElementById('authMessage');
+            msgEl.className = type === 'error' ? 'error-message' : 'success-message';
+            msgEl.textContent = msg;
+        }
+
+        function showAuth() {
+            document.getElementById('authScreen').style.display = 'flex';
+            document.getElementById('appScreen').style.display = 'none';
+        }
+
+        function showApp() {
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('appScreen').style.display = 'grid';
+            updateUIWithAppState();
+        }
+
+        function updateUIWithAppState() {
+            document.getElementById('sidebarClinicName').textContent = appState.clinicName;
+            document.getElementById('sidebarDoctorName').textContent = appState.doctorName;
+            document.getElementById('licenseClinicName').textContent = appState.clinicName;
+            document.getElementById('licenseDoctorName').textContent = appState.doctorName;
+            document.getElementById('licenseKey').textContent = appState.activationKey;
+
+            const status = document.getElementById('licenseStatus');
+            if (isLicenseValid()) {
+                status.textContent = '✓ License Active';
+                status.classList.remove('expired');
+            } else {
+                status.textContent = '✗ License Expired';
+                status.classList.add('expired');
+            }
+        }
+
+        // ===== DATA MANAGEMENT =====
+        function loadData() {
+            updateDashboard();
+            updateAppointmentsList();
+            updatePatientsList();
+            updatePatientDatalist();
+        }
+
+        function saveData() {
+            appState.patients = appState.patients || [];
+            appState.appointments = appState.appointments || [];
+            localStorage.setItem('clinicAuth', JSON.stringify(appState));
+        }
+
+        // ===== DASHBOARD =====
+        function updateDashboard() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppts = (appState.appointments || []).filter(a => a.date === today);
+            const upcomingAppts = (appState.appointments || []).filter(a => new Date(a.date) > new Date());
+
+            document.getElementById('totalPatients').textContent = (appState.patients || []).length;
+            document.getElementById('todayAppointments').textContent = todayAppts.length;
+            document.getElementById('upcomingCount').textContent = upcomingAppts.length;
+
+            renderAppointmentList('todayAppointmentsList', todayAppts);
+            renderAppointmentList('upcomingAppointmentsList', upcomingAppts.slice(0, 5));
+        }
+
+        function renderAppointmentList(elementId, appointments) {
+            const container = document.getElementById(elementId);
+            if (appointments.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">No appointments</div></div>';
+                return;
+            }
+
+            container.innerHTML = appointments.map(apt => `
+                <div class="appointment-item">
+                    <div class="appointment-info">
+                        <div class="appointment-time">${apt.time}</div>
+                        <div class="appointment-patient"><strong>${apt.patient}</strong></div>
+                        <div class="appointment-details">📞 ${apt.phone}</div>
+                        ${apt.symptoms ? `<div class="appointment-details">📋 ${apt.symptoms}</div>` : ''}
+                    </div>
+                    <div class="appointment-actions">
+                        <span class="appointment-status status-${apt.status || 'pending'}">${(apt.status || 'pending').toUpperCase()}</span>
+                        <button class="btn-small btn-small-primary" onclick="markAppointmentDone('${apt.id}')">✓ Done</button>
+                        <button class="btn-small btn-small-danger" onclick="deleteAppointment('${apt.id}')">🗑 Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== APPOINTMENTS =====
+        function addAppointment(e) {
+            e.preventDefault();
+
+            const patient = document.getElementById('appointmentPatient').value.trim();
+            const phone = document.getElementById('appointmentPhone').value.trim();
+            const date = document.getElementById('appointmentDate').value;
+            const time = document.getElementById('appointmentTime').value;
+            const symptoms = document.getElementById('appointmentSymptoms').value.trim();
+
+            if (!patient || !phone || !date || !time) {
+                showToast('Please fill all required fields', 'error');
+                return;
+            }
+
+            const apt = {
+                id: Date.now().toString(),
+                patient,
+                phone,
+                date,
+                time,
+                symptoms,
+                status: 'pending',
+                created: new Date().toISOString()
+            };
+
+            appState.appointments = appState.appointments || [];
+            appState.appointments.push(apt);
+            saveData();
+
+            document.getElementById('appointmentForm').reset();
+            setMinDate();
+            showToast('✓ Appointment scheduled successfully');
+            switchScreen('dashboard');
+            updateDashboard();
+        }
+
+        function updateAppointmentsList() {
+            const appts = appState.appointments || [];
+            const sorted = appts.sort((a, b) => {
+                const aDate = new Date(a.date + ' ' + a.time);
+                const bDate = new Date(b.date + ' ' + b.time);
+                return bDate - aDate;
+            });
+            renderAppointmentList('appointmentsList', sorted);
+        }
+
+        function markAppointmentDone(id) {
+            const apt = appState.appointments.find(a => a.id === id);
+            if (apt) {
+                apt.status = 'completed';
+                saveData();
+                updateAppointmentsList();
+                updateDashboard();
+                showToast('✓ Appointment marked as completed');
+            }
+        }
+
+        function deleteAppointment(id) {
+            if (confirm('Delete this appointment?')) {
+                appState.appointments = appState.appointments.filter(a => a.id !== id);
+                saveData();
+                updateAppointmentsList();
+                updateDashboard();
+                showToast('✓ Appointment deleted');
+            }
+        }
+
+        // ===== PATIENTS =====
+        function addPatient(e) {
+            e.preventDefault();
+
+            const patient = {
+                id: Date.now().toString(),
+                name: document.getElementById('patientName').value.trim(),
+                age: document.getElementById('patientAge').value,
+                phone: document.getElementById('patientPhone').value.trim(),
+                email: document.getElementById('patientEmail').value.trim(),
+                gender: document.getElementById('patientGender').value,
+                history: document.getElementById('patientHistory').value.trim(),
+                notes: document.getElementById('patientNotes').value.trim(),
+                created: new Date().toISOString()
+            };
+
+            appState.patients = appState.patients || [];
+            appState.patients.push(patient);
+            saveData();
+
+            document.getElementById('patientForm').reset();
+            showToast('✓ Patient registered successfully');
+            switchScreen('patients');
+            updatePatientsList();
+            updatePatientDatalist();
+        }
+
+        function updatePatientsList() {
+            const tbody = document.getElementById('patientsTableBody');
+            const patients = appState.patients || [];
+
+            if (patients.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: var(--text-secondary);">No patients registered</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = patients.map(p => {
+                const apptCount = (appState.appointments || []).filter(a => a.patient === p.name).length;
+                return `
+                    <tr>
+                        <td><strong>${p.name}</strong></td>
+                        <td>${p.phone}</td>
+                        <td>${p.age} years</td>
+                        <td>${apptCount}</td>
+                        <td>
+                            <button class="btn-small btn-small-danger" onclick="deletePatient('${p.id}')">🗑 Delete</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updatePatientDatalist() {
+            const datalist = document.getElementById('patientsList');
+            datalist.innerHTML = (appState.patients || []).map(p => 
+                `<option value="${p.name}">`
+            ).join('');
+        }
+
+        function deletePatient(id) {
+            if (confirm('Delete this patient?')) {
+                appState.patients = appState.patients.filter(p => p.id !== id);
+                saveData();
+                updatePatientsList();
+                updatePatientDatalist();
+                showToast('✓ Patient deleted');
+            }
+        }
+
+        // ===== NAVIGATION =====
+        function switchScreen(screenName) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+            // Show selected screen
+            document.getElementById(screenName + 'Screen').classList.add('active');
+
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.screen === screenName) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Update title
+            const titles = {
+                dashboard: '📊 Dashboard',
+                appointments: '📅 Appointments',
+                patients: '👥 Patients',
+                newAppointment: '➕ New Appointment',
+                newPatient: '➕ New Patient',
+                license: '🔐 License'
+            };
+            document.getElementById('screenTitle').textContent = titles[screenName];
+
+            appState.currentScreen = screenName;
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('clinicAuth');
+                appState = { patients: [], appointments: [] };
+                showAuth();
+                document.getElementById('authForm').reset();
+                document.getElementById('authMessage').innerHTML = '';
+            }
+        }
+
+        // ===== UTILITY =====
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Set today's date as default
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            if (document.getElementById('appointmentDate')) {
+                document.getElementById('appointmentDate').value = today;
+            }
+        });
+    </script>
+</body>
+</html>
